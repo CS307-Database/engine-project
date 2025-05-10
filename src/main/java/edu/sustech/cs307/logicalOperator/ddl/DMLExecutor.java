@@ -1,4 +1,4 @@
-package edu.sustech.cs307.logicalOperator.dml;
+package edu.sustech.cs307.logicalOperator.ddl;
 
 import edu.sustech.cs307.exception.DBException;
 

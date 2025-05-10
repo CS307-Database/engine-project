@@ -11,15 +11,14 @@ import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
 import net.sf.jsqlparser.statement.update.Update;
 import net.sf.jsqlparser.statement.insert.Insert;
-import net.sf.jsqlparser.statement.delete.Delete;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 
 import edu.sustech.cs307.exception.ExceptionTypes;
 import edu.sustech.cs307.logicalOperator.*;
 import edu.sustech.cs307.system.DBManager;
-import edu.sustech.cs307.logicalOperator.dml.CreateTableExecutor;
-import edu.sustech.cs307.logicalOperator.dml.ExplainExecutor;
-import edu.sustech.cs307.logicalOperator.dml.ShowDatabaseExecutor;
+import edu.sustech.cs307.logicalOperator.ddl.CreateTableExecutor;
+import edu.sustech.cs307.logicalOperator.ddl.ExplainExecutor;
+import edu.sustech.cs307.logicalOperator.ddl.ShowDatabaseExecutor;
 import edu.sustech.cs307.exception.DBException;
 
 public class LogicalPlanner {

@@ -1,13 +1,9 @@
-package edu.sustech.cs307.logicalOperator.dml;
+package edu.sustech.cs307.logicalOperator.ddl;
 
 import edu.sustech.cs307.system.DBManager;
 import edu.sustech.cs307.exception.DBException;
-import edu.sustech.cs307.optimizer.LogicalPlanner;
-import edu.sustech.cs307.logicalOperator.LogicalOperator;
 
 import net.sf.jsqlparser.statement.ExplainStatement;
-
-import org.pmw.tinylog.Logger;
 
 public class ExplainExecutor implements DMLExecutor {
 
