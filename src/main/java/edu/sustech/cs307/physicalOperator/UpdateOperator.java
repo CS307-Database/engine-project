@@ -73,7 +73,7 @@ public class UpdateOperator implements PhysicalOperator {
                         }
                     }
                     if (index == -1) {
-                        throw new DBException(ExceptionTypes.ColumnDoseNotExist(targetColumn));
+                        throw new DBException(ExceptionTypes.ColumnDoesNotExist(targetColumn));
                     }
                     Value newValue = tuple.evaluateExpression(updateSet.getValue(i));
                     newValues.set(index, newValue);
