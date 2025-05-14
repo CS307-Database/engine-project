@@ -9,6 +9,7 @@ import edu.sustech.cs307.tuple.TableTuple;
 import edu.sustech.cs307.tuple.TempTuple;
 import edu.sustech.cs307.tuple.Tuple;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class UpdateOperator implements PhysicalOperator {
 
                 for (int i = 0; i < this.updateSet.getColumns().size(); i++) {
                     String targetTable = updateSet.getColumn(i).getTableName();
+                    if (targetTable == null) targetTable = tuple.getTableName();
                     String targetColumn = updateSet.getColumn(i).getColumnName();
                     int index = -1;
                     for (int j = 0; j < schema.length; j++) {
@@ -80,7 +82,14 @@ public class UpdateOperator implements PhysicalOperator {
                 }
                 ByteBuf buffer = Unpooled.buffer();
                 for (Value v : newValues) {
-                    buffer.writeBytes(v.ToByte());
+                    String str = "";
+                    if (v.type == ValueType.CHAR) str = (String) v.value;
+                    if (str.length() == 64) {
+                        ByteBuffer temp = ByteBuffer.allocate(64);
+                        temp.put(str.getBytes());
+                        buffer.writeBytes(temp.array());
+                    }
+                    else buffer.writeBytes(v.ToByte());
                 }
 
                 fileHandle.UpdateRecord(tuple.getRID(), buffer);

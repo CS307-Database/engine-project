@@ -27,6 +27,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-
-### JAVA CLASS ###
-*.class
+.idea/
+.CS307-DB/
