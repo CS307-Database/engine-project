@@ -15,7 +15,7 @@ public class LogicalTableScanOperator extends LogicalOperator {
         this.tableName = tableName;
         this.dbManager = dbManager;
         if (!dbManager.isTableExists(tableName)) {
-            throw new DBException(ExceptionTypes.TableDoseNotExist(tableName));
+            throw new DBException(ExceptionTypes.TableDoesNotExist(tableName));
         }
     }
 

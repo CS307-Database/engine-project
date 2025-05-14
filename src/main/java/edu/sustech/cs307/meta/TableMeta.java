@@ -62,7 +62,7 @@ public class TableMeta {
 
     public void dropColumn(String columnName) throws DBException {
         if (!this.columns.containsKey(columnName)) {
-            throw new DBException(ExceptionTypes.ColumnDoseNotExist(columnName));
+            throw new DBException(ExceptionTypes.ColumnDoesNotExist(columnName));
         }
         this.columns.remove(columnName);
     }

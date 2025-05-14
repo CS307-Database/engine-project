@@ -108,7 +108,7 @@ public class PhysicalPlanner {
             for (int i = 0; i < logicalInsertOp.columns.size(); i++) {
                 String colName = logicalInsertOp.columns.get(i).getColumnName();
                 if (tableMeta.getColumnMeta(colName) == null) {
-                    throw new DBException(ExceptionTypes.ColumnDoseNotExist(colName));
+                    throw new DBException(ExceptionTypes.ColumnDoesNotExist(colName));
                 }
                 if (!tableMeta.columns_list.get(i).name.equals(colName)) {
                     throw new DBException(ExceptionTypes.InsertColumnNameMismatch());

@@ -12,9 +12,9 @@ public enum ExceptionTypes {
     UNABLE_LOAD_METADATA,
     UNABLE_SAVE_METADATA,
     TABLE_ALREADY_EXIST,
-    TABLE_DOSE_NOT_EXIST,
+    TABLE_DOES_NOT_EXIST,
     COLUMN_ALREADY_EXIST,
-    COLUMN_DOSE_NOT_EXIST,
+    COLUMN_DOES_NOT_EXIST,
     TABLE_HAS_NO_COLUMN,
     INVALID_TABLE_WIDTH,
     INSERT_COLUMN_SIZE_NOT_MATCH,
@@ -77,10 +77,10 @@ public enum ExceptionTypes {
         return TABLE_ALREADY_EXIST;
     }
 
-    static public ExceptionTypes TableDoseNotExist(String tableName) {
-        TABLE_DOSE_NOT_EXIST.SetErrorResult(
+    static public ExceptionTypes TableDoesNotExist(String tableName) {
+        TABLE_DOES_NOT_EXIST.SetErrorResult(
                 String.format("Table does not exist: %s", tableName));
-        return TABLE_DOSE_NOT_EXIST;
+        return TABLE_DOES_NOT_EXIST;
     }
 
     static public ExceptionTypes ColumnAlreadyExist(String columnName) {
@@ -89,10 +89,10 @@ public enum ExceptionTypes {
         return COLUMN_ALREADY_EXIST;
     }
 
-    static public ExceptionTypes ColumnDoseNotExist(String columnName) {
-        COLUMN_DOSE_NOT_EXIST.SetErrorResult(
+    static public ExceptionTypes ColumnDoesNotExist(String columnName) {
+        COLUMN_DOES_NOT_EXIST.SetErrorResult(
                 String.format("Column does not exist: %s", columnName));
-        return COLUMN_DOSE_NOT_EXIST;
+        return COLUMN_DOES_NOT_EXIST;
     }
 
     static public ExceptionTypes TableHasNoColumn(String tableName) {

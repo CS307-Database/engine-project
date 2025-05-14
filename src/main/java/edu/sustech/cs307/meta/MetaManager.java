@@ -42,14 +42,14 @@ public class MetaManager {
 
     public void addColumnInTable(String tableName, ColumnMeta column) throws DBException {
         if (!tables.containsKey(tableName)) {
-            throw new DBException(ExceptionTypes.TableDoseNotExist(tableName));
+            throw new DBException(ExceptionTypes.TableDoesNotExist(tableName));
         }
         this.tables.get(tableName).addColumn(column);
     }
 
     public void dropColumnInTable(String tableName, String columnName) throws DBException {
         if (!tables.containsKey(tableName)) {
-            throw new DBException(ExceptionTypes.TableDoseNotExist(tableName));
+            throw new DBException(ExceptionTypes.TableDoesNotExist(tableName));
         }
         this.tables.get(tableName).dropColumn((columnName));
     }
@@ -58,7 +58,7 @@ public class MetaManager {
         if (tables.containsKey(tableName)) {
             return tables.get(tableName);
         }
-        throw new DBException(ExceptionTypes.TableDoseNotExist(tableName));
+        throw new DBException(ExceptionTypes.TableDoesNotExist(tableName));
         // return null;
     }
 
