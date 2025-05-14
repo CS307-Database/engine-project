@@ -44,7 +44,13 @@ public abstract class Tuple {
 
         try {
             if (leftExpr instanceof Column leftColumn) {
-                leftValue = tuple.getValue(new TabCol(leftColumn.getTableName(), leftColumn.getColumnName()));
+                //get table name
+                String table_name = leftColumn.getTableName();
+                if (tuple instanceof TableTuple) {
+                    TableTuple tableTuple = (TableTuple) tuple;
+                    table_name = tableTuple.getTableName();
+                }
+                leftValue = tuple.getValue(new TabCol(table_name, leftColumn.getColumnName()));
                 if (leftValue.type == ValueType.CHAR) {
                     leftValue = new Value(leftValue.toString());
                 }
@@ -53,7 +59,13 @@ public abstract class Tuple {
             }
 
             if (rightExpr instanceof Column rightColumn) {
-                rightValue = tuple.getValue(new TabCol(rightColumn.getTableName(), rightColumn.getColumnName()));
+                //get table name
+                String table_name = rightColumn.getTableName();
+                if (tuple instanceof TableTuple) {
+                    TableTuple tableTuple = (TableTuple) tuple;
+                    table_name = tableTuple.getTableName();
+                }
+                rightValue = tuple.getValue(new TabCol(table_name, rightColumn.getColumnName()));
             } else {
                 rightValue = getConstantValue(rightExpr); // Handle constant right value
 

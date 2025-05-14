@@ -1,0 +1,1 @@
+{"t":{"tableName":"t","columns_list":[{"tableName":"t","name":"id","type":"INTEGER","len":8,"offset":0},{"tableName":"t","name":"name","type":"CHAR","len":64,"offset":8},{"tableName":"t","name":"age","type":"INTEGER","len":8,"offset":72},{"tableName":"t","name":"gpa","type":"FLOAT","len":8,"offset":80}],"indexes":{}}}
