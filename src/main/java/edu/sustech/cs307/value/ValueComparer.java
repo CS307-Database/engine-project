@@ -35,7 +35,9 @@ public class ValueComparer {
                 return Double.compare(d1, d2);
             case CHAR:
                 String s1 = (String) v1.value;
+                s1=s1.trim();
                 String s2 = (String) v2.value;
+                s2=s2.trim();
                 return s1.compareTo(s2);
             default:
                 throw new DBException(ExceptionTypes.WrongComparisonError(v1.type, v2.type));
