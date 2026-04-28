@@ -1,6 +1,10 @@
 package edu.sustech.cs307.storage;
 
 import edu.sustech.cs307.exception.DBException;
+import edu.sustech.cs307.storage.replacer.LRUReplacer;
+import edu.sustech.cs307.storage.replacer.ClockReplacer;
+
+import edu.sustech.cs307.storage.replacer.PageReplacer;
 
 import java.util.*;
 
@@ -26,7 +30,7 @@ public class BufferPool {
     private final HashMap<PagePosition, Integer> pageMap;
     private final LinkedList<Integer> freeList;
     private final DiskManager diskManager;
-    private final LRUReplacer lruReplacer;
+    private final PageReplacer replacer;
 
     /**
      * 构造一个 BufferPool 实例。
@@ -36,7 +40,7 @@ public class BufferPool {
      */
     public BufferPool(int pool_size, DiskManager diskManager) {
         this.poolSize = pool_size;
-        this.lruReplacer = new LRUReplacer(pool_size);
+        this.replacer = new LRUReplacer(pool_size);
         this.freeList = new LinkedList<>();
         for (int i = 0; i < pool_size; i++) {
             freeList.add(i);
@@ -72,7 +76,7 @@ public class BufferPool {
             Page page = pages.get(frame_id);
             page.pin_count++;
             if (page.pin_count == 1) {
-                lruReplacer.Pin(frame_id);
+                replacer.Pin(frame_id);
             }
             return page;
         } else {
@@ -85,7 +89,7 @@ public class BufferPool {
             diskManager.ReadPage(page, position.filename, position.offset, Page.DEFAULT_PAGE_SIZE);
             page.pin_count++;
             if (page.pin_count == 1) {
-                lruReplacer.Pin(frame_id);
+                replacer.Pin(frame_id);
             }
             return page;
         }
@@ -106,7 +110,7 @@ public class BufferPool {
             }
             page.pin_count--;
             if (page.pin_count == 0) {
-                lruReplacer.Unpin(frame_id);
+                replacer.Unpin(frame_id);
             }
             page.dirty |= is_dirty;
             return true;
@@ -154,7 +158,7 @@ public class BufferPool {
         page.pin_count++;
 
         if (page.pin_count == 1) {
-            lruReplacer.Pin(frame_id);
+            replacer.Pin(frame_id);
         }
         return page;
     }
@@ -228,7 +232,7 @@ public class BufferPool {
      * 查找一个受害者页面以进行替换。
      * 
      * 如果自由列表不为空，则从中移除并返回一个页面ID。
-     * 否则，使用LRU替换算法选择一个页面ID。如果选择的页面是脏页，
+     * 否则，使用LRU or Clock替换算法选择一个页面ID。如果选择的页面是脏页，
      * 则将其刷新到磁盘。返回找到的页面ID。
      * 
      * @return 被替换的页面ID，如果没有可替换的页面则返回-1。
@@ -238,7 +242,7 @@ public class BufferPool {
         if (!freeList.isEmpty()) {
             return freeList.removeFirst();
         } else {
-            int frame_id = lruReplacer.Victim();
+            int frame_id = replacer.Victim();
             if (frame_id != -1) {
                 Page page = pages.get(frame_id);
                 if (page.dirty) {

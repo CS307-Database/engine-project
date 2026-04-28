@@ -1,8 +1,8 @@
-package edu.sustech.cs307.storage;
+package edu.sustech.cs307.storage.replacer;
 
 import java.util.*;
 
-public class LRUReplacer {
+public class LRUReplacer implements PageReplacer {
 
     private final int maxSize;
     private final Set<Integer> pinnedFrames = new HashSet<>();
