@@ -29,5 +29,3 @@ bin/
 .DS_Store
 .idea/
 .CS307-DB/
-*.class
-/CS307-DB
