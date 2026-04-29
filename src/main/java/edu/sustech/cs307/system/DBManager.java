@@ -7,12 +7,16 @@ import edu.sustech.cs307.meta.MetaManager;
 import edu.sustech.cs307.meta.TableMeta;
 import edu.sustech.cs307.storage.BufferPool;
 import edu.sustech.cs307.storage.DiskManager;
+import edu.sustech.cs307.storage.replacer.ClockReplacer;
+import edu.sustech.cs307.storage.replacer.PageReplacer;
 import org.apache.commons.lang3.StringUtils;
 import org.pmw.tinylog.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Clock;
 import java.util.ArrayList;
+import java.util.function.IntFunction;
 
 public class DBManager {
     private final MetaManager metaManager;
@@ -20,13 +24,31 @@ public class DBManager {
     private final DiskManager diskManager;
     private final BufferPool bufferPool;
     private final RecordManager recordManager;
+    private TransactionManager transactionManager;
+    private final IntFunction<PageReplacer> replacerFactory;
 
     public DBManager(DiskManager diskManager, BufferPool bufferPool, RecordManager recordManager,
-            MetaManager metaManager) {
+                     MetaManager metaManager) {
+        this(diskManager, bufferPool, recordManager, metaManager, null, ClockReplacer::new);
+    }
+
+    public DBManager(DiskManager diskManager, BufferPool bufferPool, RecordManager recordManager,
+                     MetaManager metaManager, TransactionManager transactionManager,
+                     IntFunction<PageReplacer> replacerFactory) {
         this.diskManager = diskManager;
         this.bufferPool = bufferPool;
         this.recordManager = recordManager;
         this.metaManager = metaManager;
+        this.replacerFactory = replacerFactory;
+        this.transactionManager = transactionManager == null ? new TransactionManager(this) : transactionManager;
+    }
+
+    public TransactionManager getTransactionManager() {
+        return transactionManager;
+    }
+
+    public void setTransactionManager(TransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
     }
 
     public BufferPool getBufferPool() {
@@ -100,7 +122,7 @@ public class DBManager {
     /**
      * Drops a table from the database by removing its metadata and associated
      * files.
-     * 
+     *
      * @param table_name The name of the table to be dropped
      * @throws DBException If the table directory does not exist or encounters IO
      *                     errors during deletion
@@ -152,6 +174,20 @@ public class DBManager {
      */
     public void closeDBManager() throws DBException {
         this.bufferPool.FlushAllPages(null);
+        DiskManager.dump_disk_manager_meta(this.diskManager);
+        this.metaManager.saveToJson();
+    }
+
+    public void beginTransaction() throws DBException {
+        transactionManager.begin();
+    }
+
+    public void commitTransaction() throws DBException{
+        transactionManager.commit();
+    }
+
+    public void persistRuntimeState() throws DBException {
+        this.bufferPool.FlushAllPages("");
         DiskManager.dump_disk_manager_meta(this.diskManager);
         this.metaManager.saveToJson();
     }

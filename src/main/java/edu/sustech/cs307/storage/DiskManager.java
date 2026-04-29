@@ -50,7 +50,7 @@ public class DiskManager {
         } catch (Exception e) {
             throw new DBException(ExceptionTypes.UnableLoadMetadata(e.getMessage()));
         }
-    };
+    }
 
     /**
      * 将 DiskManager 的元数据转储到指定的元文件中。
@@ -58,6 +58,7 @@ public class DiskManager {
      * @param disk_manager 要转储元数据的 DiskManager 实例
      * @throws DBException 如果在写入元数据时发生错误
      */
+
     public static void dump_disk_manager_meta(DiskManager disk_manager) throws DBException {
         Map<String, Integer> filePages = disk_manager.filePages;
         Path path = Path.of(String.format("%s/%s", DBEntry.DB_NAME, DISK_MANAGER_META));

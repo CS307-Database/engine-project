@@ -39,8 +39,12 @@ public class BufferPool {
      * @param diskManager 磁盘管理器，用于管理磁盘操作
      */
     public BufferPool(int pool_size, DiskManager diskManager) {
+        this(pool_size, diskManager,new LRUReplacer(pool_size));
+    }
+
+    public BufferPool(int pool_size, DiskManager diskManager, PageReplacer replacer) {
         this.poolSize = pool_size;
-        this.replacer = new LRUReplacer(pool_size);
+        this.replacer = replacer;
         this.freeList = new LinkedList<>();
         for (int i = 0; i < pool_size; i++) {
             freeList.add(i);

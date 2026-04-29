@@ -11,6 +11,7 @@ import edu.sustech.cs307.storage.BufferPool;
 import edu.sustech.cs307.storage.DiskManager;
 import edu.sustech.cs307.system.DBManager;
 import edu.sustech.cs307.system.RecordManager;
+import edu.sustech.cs307.system.TransactionManager;
 import edu.sustech.cs307.tuple.Tuple;
 
 import org.apache.commons.lang3.StringUtils;
